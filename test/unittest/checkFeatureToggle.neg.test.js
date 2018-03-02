@@ -48,7 +48,7 @@ describe("Multi-value check", function () {
         ezeFeatureToggle.checkMultivalueJsonFeatureToggle(servicemock.mockRequest().User, 'workflowstatus-option',
                 'param6')
             .then(result => {
-                expect(result.key).to.equal('get-by-workflowstatusid');
+                expect(result.key).to.equal(undefined);
             });
 
         done();

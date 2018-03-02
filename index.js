@@ -1,13 +1,13 @@
-const ezeLD = require('./lib/init');
+const ezeFeatureToggle = require('./lib/init');
 const crypto = require('crypto');
 
 function checkBooleanFeatureToggle(user, featureToggle, option) {
-    if (!ezeLD.ldAvailable) {
+    if (!ezeFeatureToggle.ldAvailable) {
         return Promise.resolve(false);
     }
 
     return new Promise((resolve, reject) => {
-        ezeLD.ldClient.variation(featureToggle, getKey(user, option), false,
+        ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user, option), false,
             (err, res) => {
                 if (res) {
                     resolve(true);
@@ -19,12 +19,12 @@ function checkBooleanFeatureToggle(user, featureToggle, option) {
 }
 
 function checkMultivalueJsonFeatureToggle(user, featureToggle, option) {
-    if (!ezeLD.ldAvailable) {
+    if (!ezeFeatureToggle.ldAvailable) {
         return Promise.resolve(false);
     }
 
     return new Promise((resolve, reject) => {
-        ezeLD.ldClient.variation(featureToggle, getKey(user, option), false,
+        ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user, option), false,
             (err, res) => {
                 if (res) {
                     resolve(res);
