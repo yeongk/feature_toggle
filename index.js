@@ -1,5 +1,4 @@
 const ezeFeatureToggle = require('./lib/init');
-const crypto = require('crypto');
 
 function checkBooleanFeatureToggle(user, featureToggle, option) {
     if (!ezeFeatureToggle.ldAvailable) {
