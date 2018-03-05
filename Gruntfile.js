@@ -20,7 +20,6 @@ module.exports = function (grunt) {
         mocha_istanbul: {
             coverage: {
                 src: ['<%= test %>/**/*.test.js'],
-                // src: ['<%= test %>/**/*.test.js'],
                 options: {
                     reportFormats: ['cobertura', 'lcov'],
                     check: {
@@ -37,7 +36,7 @@ module.exports = function (grunt) {
 
         eslint: {
             options: {
-                configFile: '.eslintrc.json',
+                configFile: '.eslintrc.json'
             },
             target: ['<%= src %>/**/*.js']
         }
@@ -47,7 +46,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', ['eslint', 'mocha_istanbul:coverage']);
 
-    grunt.registerTask('build', ['test', 'clean']);
+    grunt.registerTask('build', ['test']);
 
     grunt.registerTask('default', ['build']);
 

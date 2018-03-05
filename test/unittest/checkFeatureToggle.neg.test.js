@@ -40,15 +40,15 @@ describe("Boolean check", function () {
 describe("Multi-value check", function () {
     const servicemock = require("../mock/servicemock");
 
-    it("should run checkBooleanFeatureToggle successfully", function (done) {
+    it("should run checkMultivalueFeatureToggle successfully", function (done) {
 
         mockery.resetCache();
         mockery.registerMock('ldclient-node', servicemock.mockLaunchDarklyNegative);
         const ezeFeatureToggle = require('../../index')
-        ezeFeatureToggle.checkMultivalueJsonFeatureToggle(servicemock.mockRequest().User, 'workflowstatus-option',
+        ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest().User, 'workflowstatus-option',
                 'param6')
             .then(result => {
-                expect(result.key).to.equal(undefined);
+                expect(result).to.equal(undefined);
             });
 
         done();

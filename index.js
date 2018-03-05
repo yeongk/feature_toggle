@@ -18,13 +18,13 @@ function checkBooleanFeatureToggle(user, featureToggle, option) {
     });
 }
 
-function checkMultivalueJsonFeatureToggle(user, featureToggle, option) {
+function checkMultivalueFeatureToggle(user, featureToggle, option) {
     if (!ezeFeatureToggle.ldAvailable) {
         return Promise.resolve(false);
     }
 
     return new Promise((resolve, reject) => {
-        ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user, option), false,
+        ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user, option), "",
             (err, res) => {
                 if (res) {
                     resolve(res);
@@ -62,5 +62,5 @@ function getKey(user, option) {
 
 module.exports = {
     checkBooleanFeatureToggle,
-    checkMultivalueJsonFeatureToggle
+    checkMultivalueFeatureToggle
 }
