@@ -29,14 +29,18 @@ describe("Boolean check", function () {
         mockery.resetCache();
         mockery.registerMock('ldclient-node', servicemock.mockLaunchDarkly);
         const ezeFeatureToggle = require('../../index')
-        ezeFeatureToggle.checkBooleanFeatureToggle(servicemock.mockRequest().User, 'workflowstatus-get-by-firmid')
+        ezeFeatureToggle.checkBooleanFeatureToggle(servicemock.mockRequest(true).User, 'workflowstatus-get-by-firmid')
             .then(result => {
                 expect(result).to.equal(true);
+            })
+            .catch(err => {
+                console.log(`err: ${err}`)
             });
 
         done();
     })
 });
+
 describe("Multi-value check", function () {
     const servicemock = require("../mock/servicemock");
 
@@ -45,10 +49,40 @@ describe("Multi-value check", function () {
         mockery.resetCache();
         mockery.registerMock('ldclient-node', servicemock.mockLaunchDarkly);
         const ezeFeatureToggle = require('../../index')
-        ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest().User, 'workflowstatus-option',
+        ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest(true).User, 'workflowstatus-option',
                 'param6')
             .then(result => {
-                expect(result).to.equal('get-by-workflowstatusid');
+                expect(result.key).to.equal("get-by-workflowstatusid");
+                // expect(result).to.equal({
+                //     key: "get-by-workflowstatusid"
+                // });
+            })
+            .catch(err => {
+                console.log(`err: ${err}`)
+            });
+
+        done();
+    })
+});
+
+describe("Multi-value check in unauthenticated case", function () {
+    const servicemock = require("../mock/servicemock");
+
+    it("should run checkMultivalueFeatureToggle successfully", function (done) {
+
+        mockery.resetCache();
+        mockery.registerMock('ldclient-node', servicemock.mockLaunchDarkly);
+        const ezeFeatureToggle = require('../../index')
+        ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest(false).User, 'workflowstatus-option',
+                'param6')
+            .then(result => {
+                expect(result.key).to.equal("get-by-workflowstatusid");
+                // expect(result).to.equal({
+                //     key: "get-by-workflowstatusid"
+                // });
+            })
+            .catch(err => {
+                console.log(`err: ${err}`)
             });
 
         done();

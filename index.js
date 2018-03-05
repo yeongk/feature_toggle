@@ -1,35 +1,43 @@
 const crypto = require('crypto');
 const ezeFeatureToggle = require('./lib/init');
 
-function checkBooleanFeatureToggle(user, featureToggle, option) {
+function checkBooleanFeatureToggle(user, featureToggle, def, option) {
     if (!ezeFeatureToggle.ldAvailable) {
         return Promise.resolve(false);
     }
 
     return new Promise((resolve, reject) => {
-        ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user, option), false,
+        ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user, option), (def ? def : false),
             (err, res) => {
-                if (res) {
-                    resolve(true);
+                if (err) {
+                    reject(err)
                 } else {
-                    resolve(false);
+                    if (res) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
                 }
             });
     });
 }
 
-function checkMultivalueFeatureToggle(user, featureToggle, option) {
+function checkMultivalueFeatureToggle(user, featureToggle, def, option) {
     if (!ezeFeatureToggle.ldAvailable) {
-        return Promise.resolve(false);
+        return Promise.reject(false);
     }
 
     return new Promise((resolve, reject) => {
-        ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user, option), "",
+        ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user, option), (def ? def : ""),
             (err, res) => {
-                if (res) {
-                    resolve(res);
+                if (err) {
+                    reject(err)
                 } else {
-                    resolve();
+                    if (res) {
+                        resolve(res);
+                    } else {
+                        resolve();
+                    }
                 }
             });
     });
