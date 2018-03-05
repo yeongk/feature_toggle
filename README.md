@@ -40,7 +40,7 @@ ezeFeatureToggle.checkBooleanFeatureToggle(
             ...
         })
         
-ezeFeatureToggle.checkMultivalueJsonFeatureToggle(
+ezeFeatureToggle.checkMultivalueFeatureToggle(
     user, feature_togge_name, optional_param)
         .then(result => {
             ...
