@@ -14,6 +14,7 @@ const mockRequest = function (useSession, firmId, parameters, body, query) {
         }
     };
     if (!useSession) {
+        req = {};
         return req;
     }
 
@@ -33,20 +34,35 @@ const mockRequest = function (useSession, firmId, parameters, body, query) {
 
 const mockLaunchDarkly = {
     init: function (sdkKey) {
-        console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
         console.log(`@@@@@@@ mockLaunchDarkly invoked @@@@@`);
-        console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
         return mockLdClient;
 
+    },
+    RedisFeatureStore: function (options) {
+        let store = options;
+        return store;
     }
 }
 
-const mockLaunchDarklyNegative = {
+const mockLaunchDarklyNegativeOnce = {
     init: function (sdkKey) {
-        console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
         console.log(`@@@@@@@ mockLaunchDarklyNegative invoked @@@@@`);
-        console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
-        return mockLdClientNegative;
+        return mockLdClientNegativeOnce;
+    },
+    RedisFeatureStore: function (options) {
+        let store = options;
+        return store;
+    }
+}
+
+const mockLaunchDarklyNegativeVariation = {
+    init: function (sdkKey) {
+        console.log(`@@@@@@@ mockLaunchDarklyNegative invoked @@@@@`);
+        return mockLdClientNegativeVariation;
+    },
+    RedisFeatureStore: function (options) {
+        let store = options;
+        return store;
     }
 }
 
@@ -68,7 +84,7 @@ const mockLdClient = {
     }
 }
 
-const mockLdClientNegative = {
+const mockLdClientNegativeOnce = {
     once: function (state, cb) {
         if (state === 'error') {
             return cb('error occurred')
@@ -84,9 +100,22 @@ const mockLdClientNegative = {
     }
 }
 
+const mockLdClientNegativeVariation = {
+    once: function (state, cb) {
+        if (state === 'ready') {
+            return cb()
+        }
+    },
+
+    variation: function (featureToggle, key, def, cb) {
+        cb('error returned', null);
+    }
+}
+
 
 module.exports = {
     mockRequest,
     mockLaunchDarkly,
-    mockLaunchDarklyNegative
+    mockLaunchDarklyNegativeOnce,
+    mockLaunchDarklyNegativeVariation
 };
