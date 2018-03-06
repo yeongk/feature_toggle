@@ -33,7 +33,7 @@ This package exports two methods:
 const ezeFeatureToggle = require("eze-feature-toggle");
 
 ezeFeatureToggle.checkBooleanFeatureToggle(
-    user, feature_togge_name, optional_param)
+    user, feature_togge_name, def_value, optional_param)
         .then(result => {
             ...
         }).catch(err => {
@@ -41,7 +41,7 @@ ezeFeatureToggle.checkBooleanFeatureToggle(
         })
         
 ezeFeatureToggle.checkMultivalueFeatureToggle(
-    user, feature_togge_name, optional_param)
+    user, feature_togge_name, def_value, optional_param)
         .then(result => {
             ...
         }).catch(err => {
@@ -51,8 +51,7 @@ ezeFeatureToggle.checkMultivalueFeatureToggle(
 ```
 
 
-NOTE: optional_param can be used to provide an additional attribute to be used as part of the rule evaluation criteria. It can be also used under an unauthentiated context where user attributes are not readily available. Values assigned can be evaluated as part of the rules configured using regex or other conditional operators.
-
+NOTE: optional_param can be used to provide an additional attribute to be used for the rule evaluation criteria. This could be linked to a deployment-time environment variable. This does not quite fit the original intent of feature toggle, so it should be considered as a last recourse in case all other options are exhausted. For an unauthenticated use case, the user id available from the OS is converted to MD5 hash and used as the user key.   
             
 
 
