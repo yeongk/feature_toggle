@@ -13,7 +13,7 @@ function checkBooleanFeatureToggle(user, featureToggle, def) {
             ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user), defValue,
                 (err, res) => {
                     if (err) {
-                        reject(err)
+                        resolve(defValue)
                     } else {
                         if (res) {
                             resolve(true);
@@ -35,16 +35,12 @@ function checkMultivalueFeatureToggle(user, featureToggle, def) {
 
     return new Promise((resolve, reject) => {
         if (!user) {
-            if (def) {
-                resolve(def)
-            } else {
-                resolve("")
-            }
+            resolve(defValue)
         } else {
             ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user), defValue,
                 (err, res) => {
                     if (err) {
-                        reject(err)
+                        resolve(defValue)
                     } else {
                         if (res) {
                             resolve(res);
