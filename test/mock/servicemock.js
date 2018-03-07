@@ -46,7 +46,7 @@ const mockLaunchDarkly = {
 
 const mockLaunchDarklyNegativeOnce = {
     init: function (sdkKey) {
-        console.log(`@@@@@@@ mockLaunchDarklyNegative invoked @@@@@`);
+        console.log(`@@@@@@@ mockLaunchDarklyNegativeOnce invoked @@@@@`);
         return mockLdClientNegativeOnce;
     },
     RedisFeatureStore: function (options) {
@@ -57,7 +57,7 @@ const mockLaunchDarklyNegativeOnce = {
 
 const mockLaunchDarklyNegativeVariation = {
     init: function (sdkKey) {
-        console.log(`@@@@@@@ mockLaunchDarklyNegative invoked @@@@@`);
+        console.log(`@@@@@@@ mockLaunchDarklyNegativeVariation invoked @@@@@`);
         return mockLdClientNegativeVariation;
     },
     RedisFeatureStore: function (options) {
@@ -74,12 +74,10 @@ const mockLdClient = {
     },
 
     variation: function (featureToggle, key, def, cb) {
-        if (featureToggle == 'workflowstatus-get-by-firmid') {
+        if (featureToggle === 'workflowstatus-get-by-firmid') {
             cb(null, true);
         } else {
-            cb(null, {
-                key: 'get-by-workflowstatusid'
-            });
+            cb(null, 'get-by-workflowstatusid');
         }
     }
 }
@@ -108,7 +106,11 @@ const mockLdClientNegativeVariation = {
     },
 
     variation: function (featureToggle, key, def, cb) {
-        cb('error returned', null);
+        if (featureToggle === 'workflowstatus-get-by-firmid') {
+            cb(null, false);
+        } else {
+            cb('error returned', null);
+        }
     }
 }
 

@@ -92,7 +92,7 @@ describe("Multi-value check under unauthenticated case", function () {
         ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest(false).User, 'workflowstatus-option',
                 'param6')
             .then(result => {
-                expect(result).to.equal(undefined);
+                expect(result).to.equal('param6');
             })
             .catch(err => {
                 console.log(`err: ${err}`)
@@ -113,7 +113,7 @@ describe("Multi-value check under unauthenticated case", function () {
         ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest(true).User, 'workflowstatus-option',
                 'param6')
             .then(result => {
-                expect(result).to.equal(undefined);
+                expect(result).to.equal('param6');
             })
             .catch(err => {
                 console.log(`err: ${err}`)
@@ -134,7 +134,7 @@ describe("Multi-value check under unauthenticated case", function () {
         ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest(true).User, 'workflowstatus-option',
                 'param6')
             .then(result => {
-                expect(result).to.equal(undefined);
+                expect(result).to.equal('param6');
             })
             .catch(err => {
                 console.log(`err: ${err}`)

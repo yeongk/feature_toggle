@@ -50,12 +50,9 @@ describe("Multi-value check", function () {
         mockery.registerMock('ldclient-node', servicemock.mockLaunchDarkly);
         const ezeFeatureToggle = require('../../index')
         ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest(true).User, 'workflowstatus-option',
-                'param6')
+                'get-by-workflowstatusid')
             .then(result => {
-                expect(result.key).to.equal("get-by-workflowstatusid");
-                // expect(result).to.equal({
-                //     key: "get-by-workflowstatusid"
-                // });
+                expect(result).to.equal("get-by-workflowstatusid");
             })
             .catch(err => {
                 console.log(`err: ${err}`)
@@ -74,12 +71,9 @@ describe("Multi-value check in unauthenticated case", function () {
         mockery.registerMock('ldclient-node', servicemock.mockLaunchDarkly);
         const ezeFeatureToggle = require('../../index')
         ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest(false).User, 'workflowstatus-option',
-                'param6')
+                'get-by-workflowstatusid')
             .then(result => {
-                expect(result.key).to.equal("get-by-workflowstatusid");
-                // expect(result).to.equal({
-                //     key: "get-by-workflowstatusid"
-                // });
+                expect(result).to.equal("get-by-workflowstatusid");
             })
             .catch(err => {
                 console.log(`err: ${err}`)
