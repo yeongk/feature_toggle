@@ -58,6 +58,7 @@ function getKey(user) {
     return {
         key: (user.UserSession.FirmAuthToken + '-' + user.UserSession.UserName).toUpperCase(),
         custom: {
+            firmAuthToken: user.UserSession.FirmAuthToken,
             environment: user.UserSession.EnvironmentName,
             firmColor: user.FirmColor
         }
