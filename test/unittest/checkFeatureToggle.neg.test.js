@@ -5,7 +5,7 @@ const expect = chai.expect;
 const mockery = require('mockery');
 
 before(() => {
-    console.log('=== before on test.negative');
+    console.log('=== before() test.negative');
 
     mockery.enable({
         warnOnReplace: false,
