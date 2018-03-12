@@ -28,7 +28,7 @@ describe("Boolean check", function () {
         mockery.resetCache();
         mockery.registerMock('ldclient-node', servicemock.mockLaunchDarkly);
         const ldClient = require('../../index');
-        ldClient.init()
+        ldClient.init('dummyKey')
             .then(ezeFeatureToggle => {
                 ezeFeatureToggle.checkBooleanFeatureToggle(servicemock.mockRequest(true).User, 'workflowstatus-get-by-firmid')
                     .then(result => {
