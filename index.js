@@ -6,7 +6,7 @@ const ezeFeatureToggle = {
     checkBooleanFeatureToggle: function (user, featureToggle, def) {
         let defValue = def ? def : false;
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (!user) {
                 resolve(defValue)
             } else {
@@ -30,7 +30,7 @@ const ezeFeatureToggle = {
     checkMultivalueFeatureToggle: function (user, featureToggle, def) {
         let defValue = def ? def : "";
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (!user) {
                 resolve(defValue)
             } else {
@@ -54,6 +54,7 @@ const ezeFeatureToggle = {
 function init(sdkKey) {
     return new Promise((resolve, reject) => {
         ldClient = LaunchDarkly.init(sdkKey);
+
         ldClient.waitUntilReady()
             .then(() => {
                 resolve(ezeFeatureToggle)
