@@ -73,6 +73,12 @@ const mockLdClient = {
         }
     },
 
+    waitUntilReady: function () {
+        return new Promise((resolve, reject) => {
+            resolve();
+        })
+    },
+
     variation: function (featureToggle, key, def, cb) {
         if (featureToggle === 'workflowstatus-get-by-firmid') {
             cb(null, true);

@@ -1,57 +1,69 @@
-const ezeFeatureToggle = require('./lib/init');
+const LaunchDarkly = require('ldclient-node');
 
-function checkBooleanFeatureToggle(user, featureToggle, def) {
-    let defValue = def ? def : false;
-    if (!ezeFeatureToggle.ldAvailable) {
-        return Promise.resolve(defValue);
-    }
+let ldClient = {};
 
-    return new Promise((resolve, reject) => {
-        if (!user) {
-            resolve(defValue)
-        } else {
-            ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user), defValue,
-                (err, res) => {
-                    if (err) {
-                        resolve(defValue)
-                    } else {
-                        if (res) {
-                            resolve(true);
+const ezeFeatureToggle = {
+    checkBooleanFeatureToggle: function (user, featureToggle, def) {
+        let defValue = def ? def : false;
+
+        return new Promise((resolve, reject) => {
+            if (!user) {
+                resolve(defValue)
+            } else {
+                ldClient.variation(featureToggle, getKey(user), defValue,
+                    (err, res) => {
+                        if (err) {
+                            resolve(defValue)
                         } else {
-                            resolve(false);
+                            if (res) {
+                                resolve(true);
+                            } else {
+                                resolve(false);
+                            }
                         }
-                    }
-                });
-        }
+                    });
+            }
 
-    });
+        });
+    },
+
+    checkMultivalueFeatureToggle: function (user, featureToggle, def) {
+        let defValue = def ? def : "";
+
+        return new Promise((resolve, reject) => {
+            if (!user) {
+                resolve(defValue)
+            } else {
+                ldClient.variation(featureToggle, getKey(user), defValue,
+                    (err, res) => {
+                        if (err) {
+                            resolve(defValue)
+                        } else {
+                            if (res) {
+                                resolve(res);
+                            } else {
+                                resolve("");
+                            }
+                        }
+                    });
+            }
+        });
+    }
 }
 
-function checkMultivalueFeatureToggle(user, featureToggle, def) {
-    let defValue = def ? def : "";
-    if (!ezeFeatureToggle.ldAvailable) {
-        return Promise.resolve(defValue);
-    }
-
+function init(sdkKey) {
     return new Promise((resolve, reject) => {
-        if (!user) {
-            resolve(defValue)
-        } else {
-            ezeFeatureToggle.ldClient.variation(featureToggle, getKey(user), defValue,
-                (err, res) => {
-                    if (err) {
-                        resolve(defValue)
-                    } else {
-                        if (res) {
-                            resolve(res);
-                        } else {
-                            resolve("");
-                        }
-                    }
-                });
-        }
-    });
+        ldClient = LaunchDarkly.init(sdkKey);
+        ldClient.waitUntilReady()
+            .then(() => {
+                resolve(ezeFeatureToggle)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
 }
+
 
 function getKey(user) {
 
@@ -66,6 +78,5 @@ function getKey(user) {
 }
 
 module.exports = {
-    checkBooleanFeatureToggle,
-    checkMultivalueFeatureToggle
+    init
 }
