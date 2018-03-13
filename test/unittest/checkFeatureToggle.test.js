@@ -48,45 +48,57 @@ describe("Boolean check", function () {
 });
 
 
+describe("Multi-value check", function () {
+    const servicemock = require("../mock/servicemock");
 
-// describe("Multi-value check", function () {
-//     const servicemock = require("../mock/servicemock");
+    it("should run checkMultivalueFeatureToggle successfully", function (done) {
 
-//     it("should run checkMultivalueFeatureToggle successfully", function (done) {
+        mockery.resetCache();
+        mockery.registerMock('ldclient-node', servicemock.mockLaunchDarkly);
+        const ldClient = require('../../index')
+        ldClient.init('dummyKey')
+            .then(ezeFeatureToggle => {
+                ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest(true).User, 'workflowstatus-option')
+                    .then(result => {
+                        expect(result).to.equal("get-by-workflowstatusid");
+                    })
+                    .catch(err => {
+                        console.log(`err: ${err}`)
+                    });
 
-//         mockery.resetCache();
-//         mockery.registerMock('ldclient-node', servicemock.mockLaunchDarkly);
-//         const ezeFeatureToggle = require('../../index')
-//         ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest(true).User, 'workflowstatus-option',
-//                 'get-by-workflowstatusid')
-//             .then(result => {
-//                 expect(result).to.equal("get-by-workflowstatusid");
-//             })
-//             .catch(err => {
-//                 console.log(`err: ${err}`)
-//             });
+            })
+            .catch(err => {
+                console.log(`err:${err}`)
+            })
 
-//         done();
-//     })
-// });
+        done();
+    })
+});
 
-// describe("Multi-value check in unauthenticated case", function () {
-//     const servicemock = require("../mock/servicemock");
+describe("Multi-value check in unauthenticated case", function () {
+    const servicemock = require("../mock/servicemock");
 
-//     it("should run checkMultivalueFeatureToggle successfully", function (done) {
+    it("should run checkMultivalueFeatureToggle returning default value", function (done) {
 
-//         mockery.resetCache();
-//         mockery.registerMock('ldclient-node', servicemock.mockLaunchDarkly);
-//         const ezeFeatureToggle = require('../../index')
-//         ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest(false).User, 'workflowstatus-option',
-//                 'get-by-workflowstatusid')
-//             .then(result => {
-//                 expect(result).to.equal("get-by-workflowstatusid");
-//             })
-//             .catch(err => {
-//                 console.log(`err: ${err}`)
-//             });
+        mockery.resetCache();
+        mockery.registerMock('ldclient-node', servicemock.mockLaunchDarkly);
+        const ldClient = require('../../index')
+        ldClient.init('dummyKey')
+            .then(ezeFeatureToggle => {
+                ezeFeatureToggle.checkMultivalueFeatureToggle(servicemock.mockRequest(false).User, 'workflowstatus-option',
+                        'workflowstatus-get-by-firmid')
+                    .then(result => {
+                        expect(result).to.equal("workflowstatus-get-by-firmid");
+                    })
+                    .catch(err => {
+                        console.log(`err: ${err}`)
+                    });
 
-//         done();
-//     })
-// });
+            })
+            .catch(err => {
+                console.log(`err:${err}`)
+            })
+
+        done();
+    })
+});

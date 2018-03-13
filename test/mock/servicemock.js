@@ -44,10 +44,10 @@ const mockLaunchDarkly = {
     }
 }
 
-const mockLaunchDarklyNegativeOnce = {
+const mockLaunchDarklyNegativeReady = {
     init: function (sdkKey) {
-        console.log(`@@@@@@@ mockLaunchDarklyNegativeOnce invoked @@@@@`);
-        return mockLdClientNegativeOnce;
+        console.log(`@@@@@@@ mockLaunchDarklyNegativeReady invoked @@@@@`);
+        return mockLdClientNegativeReady;
     },
     RedisFeatureStore: function (options) {
         let store = options;
@@ -74,7 +74,7 @@ const mockLdClient = {
     },
 
     waitUntilReady: function () {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             resolve();
         })
     },
@@ -88,11 +88,17 @@ const mockLdClient = {
     }
 }
 
-const mockLdClientNegativeOnce = {
+const mockLdClientNegativeReady = {
     once: function (state, cb) {
         if (state === 'error') {
             return cb('error occurred')
         }
+    },
+
+    waitUntilReady: function () {
+        return new Promise((resolve, reject) => {
+            reject();
+        })
     },
 
     variation: function (featureToggle, key, def, cb) {
@@ -111,6 +117,12 @@ const mockLdClientNegativeVariation = {
         }
     },
 
+    waitUntilReady: function () {
+        return new Promise((resolve) => {
+            resolve();
+        })
+    },
+
     variation: function (featureToggle, key, def, cb) {
         if (featureToggle === 'workflowstatus-get-by-firmid') {
             cb(null, false);
@@ -124,6 +136,6 @@ const mockLdClientNegativeVariation = {
 module.exports = {
     mockRequest,
     mockLaunchDarkly,
-    mockLaunchDarklyNegativeOnce,
+    mockLaunchDarklyNegativeReady,
     mockLaunchDarklyNegativeVariation
 };
