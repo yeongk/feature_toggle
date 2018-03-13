@@ -29,9 +29,25 @@ This package exports two methods:
 
 ## checking toggles in your app
 
+ezeFeatureToggle is initialized via start-up config
 ```
-const ezeFeatureToggle = require("eze-feature-toggle");
+const ldClient = require("eze-feature-toggle");
 
+function getEzeFeatureToggle() {
+    return ldClient.init(process.env.EZE_FEATURE_TOGGLE_SDK_KEY)
+        .then(ezeFeatureToggle => {
+            config.ezeFeatureToggle = ezeFeatureToggle;
+            return config;
+        })
+        .catch(err => {
+            logger.error(err);
+            throw err;
+        })
+}
+```
+
+ezeFeatureToggle exposes boolean check and multi-value check methods
+```
 ezeFeatureToggle.checkBooleanFeatureToggle(
     user, feature_togge_name, def_value)
         .then(result => {
